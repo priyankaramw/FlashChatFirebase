@@ -39,7 +39,7 @@
             android:imeOptions="actionUnspecified"
             android:inputType="textCapSentences|textAutoCorrect"
             android:maxLines="1"
-            android:gravity="center_horizontal"/>
+            android:gravity="left"/>
 
         <ImageButton
             android:id="@+id/sendButton"
