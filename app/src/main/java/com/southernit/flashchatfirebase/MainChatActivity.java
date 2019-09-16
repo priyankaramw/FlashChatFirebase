@@ -2,8 +2,6 @@ package com.southernit.flashchatfirebase;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -79,10 +77,12 @@ public class MainChatActivity extends AppCompatActivity {
          */
 
         /** Below lines set name from firebase  */
-        setupDisplayNameFromFirebaes();
+        retrieveDisplayNameFromFirebaes();
     }
 
-    private void setupDisplayNameFromFirebaes () {
+
+    /** https://firebase.google.com/docs/auth/android/manage-users#update_a_users_profile   */
+    private void retrieveDisplayNameFromFirebaes() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Log.d(RegisterActivity.TAG, "Came to here");
         if (user != null) {
