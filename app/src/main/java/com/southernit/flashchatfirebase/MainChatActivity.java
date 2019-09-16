@@ -23,8 +23,10 @@ public class MainChatActivity extends AppCompatActivity {
     private EditText mInputText;
     private ImageButton mSendButton;
 
-    private FirebaseDatabase database;
-    private DatabaseReference ref;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mDatabaseReference;
+    private ChatListAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +36,8 @@ public class MainChatActivity extends AppCompatActivity {
         // TODO: Set up the display name and get the Firebase reference
         setupDisplayName();
 
-        database = FirebaseDatabase.getInstance();
-        ref = database.getReference();
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mDatabase.getReference();
 
 
         // Link the Views in the layout to the Java code
@@ -73,7 +75,6 @@ public class MainChatActivity extends AppCompatActivity {
 
 
     private void sendMessage() {
-
         /** SASITH.
          * If the data is not receiving by firebase that's because permission. Check and change this path in firebase.
          * Goto app console -> Databse -> Realtime Database -> Rules. and change the rule as follows.
@@ -82,20 +83,28 @@ public class MainChatActivity extends AppCompatActivity {
          *
          * for more info check lesson 160 Q&A for the instructions.
          */
-
-        // TODO: Grab the text the user typed in and push the message to Firebasef
+        // TODO: Grab the text the user typed in and push the message to Firebase
         String message = mInputText.getText().toString();
         if (!message.equals("")) {
             InstantMessage msgObject = new InstantMessage(message, mDisplayName);
-            ref.child("Messages").push().setValue(msgObject);
+            mDatabaseReference.child(RegisterActivity.MESSAGES_TABLE).push().setValue(msgObject); // This is the line pushing message to firebase.
             mInputText.setText("");
-//            Log.d(RegisterActivity.TAG, ref.getDatabase().toString());
+//            Log.d(RegisterActivity.TAG, mDatabaseReference.getDatabase().toString());
 //            Log.d(RegisterActivity.TAG, "Trace 2 "+message+", "+mDisplayName);
         }
-
     }
 
     // TODO: Override the onStart() lifecycle method. Setup the adapter here.
+
+    /**
+     * This place calls the firebase to get and setup the chat as a list from adapter.
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter = new ChatListAdapter(this, mDatabaseReference, mDisplayName);
+        mChatListView.setAdapter(mAdapter);
+    }
 
 
     @Override
@@ -103,6 +112,7 @@ public class MainChatActivity extends AppCompatActivity {
         super.onStop();
 
         // TODO: Remove the Firebase event listener on the adapter.
+        mAdapter.cleanUp();
 
     }
 

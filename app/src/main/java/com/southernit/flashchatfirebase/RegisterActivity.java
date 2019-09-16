@@ -29,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     public static final String CHAT_PREFS = "ChatPrefs";
     public static final String DISPLAY_NAME_KEY = "username";
     public static final String TAG = "Flash_Chat";
+    public static final String MESSAGES_TABLE = "Messages";
 
     // TODO: Add member variables here:
     // UI references.

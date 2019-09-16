@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                Log.d(RegisterActivity.TAG, String.valueOf(id));
+                //Log.d(RegisterActivity.TAG, String.valueOf(id));
                 if (id == R.integer.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
