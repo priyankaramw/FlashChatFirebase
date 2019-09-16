@@ -3,6 +3,7 @@ package com.southernit.flashchatfirebase;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,6 +13,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,6 +37,7 @@ public class MainChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_chat);
 
+        Log.d(RegisterActivity.TAG, "onCreate");
         // TODO: Set up the display name and get the Firebase reference
         setupDisplayName();
 
@@ -68,9 +73,35 @@ public class MainChatActivity extends AppCompatActivity {
 
     // TODO: Retrieve the display name from the Shared Preferences
     private void setupDisplayName () {
+        /** Below two lines set the user name from sharedPreferences.
         SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, MODE_PRIVATE);
         mDisplayName = prefs.getString(RegisterActivity.DISPLAY_NAME_KEY, "Anonymous");
+         */
 
+        /** Below lines set name from firebase  */
+        setupDisplayNameFromFirebaes();
+    }
+
+    private void setupDisplayNameFromFirebaes () {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d(RegisterActivity.TAG, "Came to here");
+        if (user != null) {
+            for (UserInfo profile : user.getProviderData()) {
+                // Id of the provider (ex: google.com)
+//                String providerId = profile.getProviderId();
+
+                // UID specific to the provider
+//                String uid = profile.getUid();
+
+                // Name, email address, and profile photo Url
+                String name = profile.getDisplayName();
+//                String email = profile.getEmail();
+//                Uri photoUrl = profile.getPhotoUrl();
+
+                mDisplayName = name;
+                Log.d(RegisterActivity.TAG, "Display name received from here. "+name);
+            }
+        }
     }
 
 

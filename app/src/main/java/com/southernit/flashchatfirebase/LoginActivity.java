@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mBtnLogin = (Button) findViewById(R.id.login_sign_in_button);
 
+        Log.d(RegisterActivity.TAG, "onCreate Login activity");
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
